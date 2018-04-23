@@ -2,9 +2,20 @@
 
 {% block content %}
 	{% if not request.user.is_authenticated %}
-		{% include "core/snippets/formsnippet.html" with form_title="Login" submit_button_name="Login" %}
+		<style type="text/css">
+			#backg{
+				background: url("/static/imgs/plane.jpg") 100% 0 no-repeat fixed;
+				color: white;
+				height: 900px;
+				padding: 100px 0 0 50px;   
+			}
+		</style>
+		<div id="backg">
+		{% include "core/snippets/formsnippet.html" with imgname="plane.jpg" form_title="Login" submit_button_name="Login" %}
+		</div>
 	{% else %}
 		<!-- Fix here -->
+
 		<p>You are already logged in mate!</p>
 	{% endif %}	
 {% endblock %}
