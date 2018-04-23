@@ -1,0 +1,13 @@
+{% extends "core/header.html" %}
+
+{% block content %}
+	<h2>{{ event.name }}</h2>
+	<p>{{ event.description }}</p>
+	<p>{{ event.location }}</p>
+	<p>{{ event.location_to }}</p>
+	<p>{{ event.flight_number }}</p>
+
+	{% for seating_plan in event.seatingplan_set.all %}
+		{% include "plane/snippets/seating_plan.html" %}
+	{% endfor %}
+{% endblock %}

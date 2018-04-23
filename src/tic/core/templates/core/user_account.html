@@ -1,0 +1,8 @@
+{% extends "core/header.html" %}
+
+{% block content %}
+	<h2>Account Info</h2>
+	<p>The amount in your account is {{ account.balance }} TL</p>
+
+	<a href="{% url 'user_account_update' %} ">Increase Balance</a>
+{% endblock %}

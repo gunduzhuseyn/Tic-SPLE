@@ -1,0 +1,8 @@
+{% extends "core/header.html" %}
+
+{% block content %}
+	<h2>Events: </h2>
+	{% for event in plane_event_list %}
+		<p><a href="/plane/event/{{event.id}}">{{ event.name }}</a></p>
+	{% endfor %}
+{% endblock %}

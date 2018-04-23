@@ -1,0 +1,8 @@
+{% block content %}
+	{% for seat in seating_plan.seat_set.all %}
+		<button type="button" {% if seat.is_empty %}class="btn btn-success" {% else %} class="btn btn-danger" {% endif %}>{{seat.seat_no}} </button>
+		{% if forloop.counter|divisibleby:seating_plan.col_no %}
+			<br>
+		{% endif %}
+	{% endfor %}
+{% endblock %}

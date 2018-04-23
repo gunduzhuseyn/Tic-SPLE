@@ -1,0 +1,10 @@
+{% extends "core/header.html" %}
+
+{% block content %}
+	{% if not request.user.is_authenticated %}
+		{% include "core/snippets/formsnippet.html" with form_title="Login" submit_button_name="Login" %}
+	{% else %}
+		<!-- Fix here -->
+		<p>You are already logged in mate!</p>
+	{% endif %}	
+{% endblock %}
