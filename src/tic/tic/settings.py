@@ -127,8 +127,7 @@ STATIC_URL = '/static/'
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'tic'
-# EMAIL_HOST_PASSWORD = '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'       #old
-EMAIL_HOST_PASSWORD = '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'       #new
+#
 EMAIL_USE_TLS = True
 
 LOGIN_REDIRECT_URL = '/home/'
