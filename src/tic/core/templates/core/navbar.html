@@ -1,6 +1,5 @@
 {% block content %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    {% if request.user.is_authenticated %} {% else %}    {% endif %}
     <a class="navbar-brand" href="{% if request.user.is_authenticated %}/plane/profile/{% else %}#{% endif %}">{% if request.user.is_authenticated %} {{ request.user.username }}{% else %} Guest {% endif %}</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -9,24 +8,37 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="/plane/home/">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/{{app_name}}/home/">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/plane/event/all">Events</a>
+                <a class="nav-link" href="/{{app_name}}/event/all">Events</a>
             </li>
             {% if request.user.is_authenticated %}
             <li class="nav-item">
-                <a class="nav-link" href="/plane/profile/">Profile</a>
+                <a class="nav-link" href="/{{app_name}}/ticket/all">My Tickets</a>
+            </li>
+            {% for group in request.user.groups.all %}
+                {% if group.name == 'content_creator' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/{{app_name}}/event/new">Create Event</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            <li class="nav-item">
+                <a class="nav-link" href="/{{app_name}}/profile/">Profile</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/plane/account/">Account</a>
+                <a class="nav-link" href="/{{app_name}}/account/">Account</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/plane/logout/">Logout</a>
-            </li>
+                <a class="nav-link" href="/{{app_name}}/logout/">Logout</a>
+            </li>            
             {% else %}
             <li class="nav-item">
-                <a class="nav-link" href="/plane/login/">Login</a>
+                <a class="nav-link" href="/{{app_name}}/register/">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/{{app_name}}/login/">Login</a>
             </li>
             {% endif %}
         </ul>

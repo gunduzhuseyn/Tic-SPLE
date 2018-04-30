@@ -1,19 +1,25 @@
 from django import forms
 
-from .models import (PlaneEvent, SeatingPlan)
-
+from .models import PlaneEvent
+from core.forms import CoreSeatingPlanForm, CoreSeatingPlanCreateForm, CoreChooseSeatForm, CoreButtonForm
 
 class PlaneEventForm(forms.ModelForm):
 	class Meta:
 		model = PlaneEvent
-		fields = '__all__'
+		exclude = ['schedule']
 		labels = {'location': 'Departure', 'location_to':'Destination'}
 
-class SeatingPlanForm(forms.ModelForm):
-	price = forms.CharField(max_length=30, label="Default Price for Tickets")
-	class Meta:
-		model = SeatingPlan
-		exclude = ['plane_event']
+class SeatingPlanForm(CoreSeatingPlanForm):
+	pass
+
+class SeatingPlanCreateForm(CoreSeatingPlanCreateForm):
+	pass
+
+class ChooseSeatForm(CoreChooseSeatForm):
+	pass
+
+class ButtonForm(CoreButtonForm):
+	pass
 
 class SeatPriceForm(forms.Form):
 	default = forms.CharField(max_length=30, label="Default price for all seats")

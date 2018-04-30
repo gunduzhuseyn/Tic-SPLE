@@ -1,0 +1,24 @@
+{% block content %}
+	{% with event=ticket.event %}
+	<!-- Event Info -->
+	<h2>Event Name: {{ event.name }}</h2>
+	<p>Event Desc:{{ event.description }}</p>
+	<p>Start time:{{ event.start_time }}</p>
+	<p>End time:{{ event.end_time }}</p>
+	<p>Departue:{{ event.location }}</p>
+	<p>Destination:{{ event.location_to }}</p>
+	<p>Flight No:{{ event.flight_number }}</p>
+	{% endwith %}
+	<!-- Ticket info -->
+	{% if ticket.is_reserved and not ticket.is_purchased %}
+		<p>Reservation Due:{{ ticket.reserve_deadline }}</p>
+	{% endif %}	
+	<p>Owner:{{ ticket.owner.username }}</p>
+	<p>Seat No:{{ ticket.seat.seat_no }}</p>
+	<p>Price: {{ticket.price}}</p>
+	<p>Status: {% if ticket.is_purchased %} Purchased {% elif ticket.is_reserved %} Reserved {% else %} Available {% endif %}</p>
+	{% if ticket.is_reserved and not ticket.is_purchased and show_url%}
+		<a href="purchase/">Purchase this ticket</a>
+	{% endif %}
+	
+{% endblock %}

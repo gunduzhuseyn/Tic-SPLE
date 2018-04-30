@@ -2,5 +2,5 @@
 
 {% block content %}
 	{% include "plane/snippets/plane_event_view_snippet.html" %}
-	<a href="reserve/">Reserve</a>
+	{% include "core/snippets/formsnippet.html" with form_title="Choose a Seat" submit_button_name="Reserve" %}
 {% endblock %}

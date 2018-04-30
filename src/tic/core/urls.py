@@ -27,4 +27,5 @@ urlpatterns = [
     path('account/update/', UserAccountUpdateView.as_view(), name='user_account_update'),
     path('403/', TemplateView.as_view(template_name='core/errors/403.html'), name='error_403'),
     path('404/', TemplateView.as_view(template_name='core/errors/404.html'), name='error_404'),
+    path('410/', TemplateView.as_view(template_name='core/errors/410.html'), name='error_410'),
 ]

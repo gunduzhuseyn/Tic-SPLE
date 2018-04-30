@@ -10,12 +10,13 @@
 				padding: 100px 0 0 50px;   
 			}
 		</style>
+
 		<div id="backg">
-		{% include "core/snippets/formsnippet.html" with imgname="plane.jpg" form_title="Login" submit_button_name="Login" %}
+			<div class="jumbotron vertical-center">
+				{% include "core/snippets/formsnippet.html" with imgname="plane.jpg" form_title="Login" submit_button_name="Login" %}
+			</div>			
 		</div>
 	{% else %}
-		<!-- Fix here -->
-
 		<p>You are already logged in mate!</p>
 	{% endif %}	
 {% endblock %}

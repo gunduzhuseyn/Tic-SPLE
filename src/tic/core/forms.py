@@ -3,9 +3,11 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
+from django.forms.widgets import DateTimeInput
+
 from datetime import date
 
-from .models import Schedule
+from .models import CoreSeatingPlan, Event
 
 class UserRegistrationForm(UserCreationForm):
 	email = forms.EmailField(max_length=52)
@@ -38,7 +40,25 @@ class PaymentForm(forms.Form):
 	cvv_number = forms.IntegerField(label="CVV Number", max_value=9999, widget=forms.TextInput(attrs={'size':'4'}))
 	amount = forms.IntegerField(label="Amount")
 
-class ScheduleForm(forms.ModelForm):
+class DateInput(forms.DateInput):
+	input_type = 'datetime-local'
+
+class CoreEventForm(forms.ModelForm):
 	class Meta:
-		model = Schedule
-		fields = '__all__'
+		model = Event
+		exclude = ['schedule']
+		labels = {'location': 'Departure', 'location_to':'Destination'}
+
+class CoreSeatingPlanForm(forms.ModelForm):
+	class Meta:
+		model = CoreSeatingPlan
+		exclude = ['event']
+
+class CoreSeatingPlanCreateForm(CoreSeatingPlanForm):
+	price = forms.CharField(max_length=30, label="Default Price for Tickets")
+
+class CoreChooseSeatForm(forms.Form):
+	seat_no = forms.CharField(max_length=10, label="Seat Number")
+
+class CoreButtonForm(forms.Form):
+	pass

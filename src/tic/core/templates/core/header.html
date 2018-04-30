@@ -19,7 +19,11 @@
 
 </head>
 <body>
-	{% include "core/navbar.html" %}
+	{% if 'plane' in request.path %}
+		{% include "core/navbar.html" with app_name='plane'%}
+	{% elif  'concert' in request.path %}
+		{% include "core/navbar.html" with app_name='concert'%}
+	{% endif %}
 	{% block content %}
 	{% endblock %}
 </body>
