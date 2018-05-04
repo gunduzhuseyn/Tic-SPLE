@@ -14,15 +14,16 @@ from django.views.generic.edit import FormView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
-from .models import ConcertEvent
+from .models import ConcertEvent, ConcertTicket
 # from .models import Event
-from .forms import ConcertEventForm, SeatingPlanCreateForm
+from plane.forms import ChooseSeatForm
+from .forms import ConcertEventForm, SeatingPlanCreateForm, ButtonForm
 
 def is_user_cc(user):
 	return user.groups.filter(name='content_creator').exists()
 
 @method_decorator(user_passes_test(is_user_cc, login_url=reverse_lazy("error_403")), name='dispatch')
-class CreatePlaneEventView(FormView):
+class CreateConcertEventView(FormView):
 	template_name = "concert/create_concert_event.html"
 	form_class = ConcertEventForm
 	success_url = reverse_lazy("create_concert_seating_plan")
@@ -68,78 +69,79 @@ class CreateSeatingPlanView(FormView):
 		del self.request.session['event_id']
 		return super().form_valid(form)
 
-# @method_decorator(login_required, name='dispatch')
-# class PlaneEventReserveView(DetailView, FormView):
-# 	model = PlaneEvent
-# 	template_name = "plane/plane_event_reserve.html"
-# 	context_object_name = 'event'
-# 	form_class = ChooseSeatForm
-# 	success_url = "/plane/ticket/all"
 
-# 	def form_valid(self, form):
-# 		event = self.get_object()
-# 		seating_plan = event.seatingplan_set.all()[0]
-# 		seat_no = int(form.cleaned_data.get('seat_no'))
-# 		if seat_no < 1 or seat_no > (seating_plan.row_no * seating_plan.col_no):
-# 			return redirect(reverse_lazy("error_404"))
+@method_decorator(login_required, name='dispatch')
+class ConcertEventReserveView(DetailView, FormView):
+	model = ConcertEvent
+	template_name = "concert/concert_event_reserve.html"
+	context_object_name = 'event'
+	form_class = ChooseSeatForm
+	success_url = "/concert/ticket/all"
 
-# 		seat = seating_plan.seat_set.get(seat_no=seat_no)
+	def form_valid(self, form):
+		event = self.get_object()
+		seating_plan = event.seatingplan_set.all()[0]
+		seat_no = int(form.cleaned_data.get('seat_no'))
+		if seat_no < 1 or seat_no > (seating_plan.row_no * seating_plan.col_no):
+			return redirect(reverse_lazy("error_404"))
 
-# 		if not seat.is_empty:
-# 			return redirect(reverse_lazy("error_404"))
+		seat = seating_plan.seat_set.get(seat_no=seat_no)
 
-# 		ticket = event.planeticket_set.get(seat=seat)
-# 		seat.is_empty = False
-# 		seat.save()
-# 		ticket.is_reserved = True
-# 		ticket.reserve_deadline = event.start_time - timedelta(days=1)
-# 		ticket.owner = self.request.user
-# 		ticket.save()
+		if not seat.is_empty:
+			return redirect(reverse_lazy("error_404"))
 
-# 		return super().form_valid(form)
+		ticket = event.concertticket_set.get(seat=seat)
+		seat.is_empty = False
+		seat.save()
+		ticket.is_reserved = True
+		ticket.reserve_deadline = event.start_time - timedelta(days=1)
+		ticket.owner = self.request.user
+		ticket.save()
+
+		return super().form_valid(form)
 
 class ConcertEventView(DetailView):
 	model = ConcertEvent
-	template_name = "plane/plane_event_view.html"
+	template_name = "concert/concert_event_view.html"
 	context_object_name = 'event'
 
-# @method_decorator(login_required, name='dispatch')
-# class PlaneTicketView(DetailView):
-# 	model = PlaneTicket
-# 	template_name = "plane/plane_ticket_view.html"
-# 	context_object_name = 'ticket'
+@method_decorator(login_required, name='dispatch')
+class ConcertTicketView(DetailView):
+	model = ConcertTicket
+	template_name = "concert/concert_ticket_view.html"
+	context_object_name = 'ticket'
 
-# @method_decorator(login_required, name='dispatch')
-# class PlaneTicketPurchaseView(PlaneTicketView, FormView):
-# 	template_name = "plane/plane_ticket_purchase.html"
-# 	form_class = ButtonForm
-# 	success_url = reverse_lazy("plane_ticket_detail")
+@method_decorator(login_required, name='dispatch')
+class ConcertTicketPurchaseView(ConcertTicketView, FormView):
+	template_name = "concert/concert_ticket_purchase.html"
+	form_class = ButtonForm
+	success_url = reverse_lazy("concert_ticket_detail")
 
-# 	def form_valid(self, form):
-# 		ticket = self.get_object()
-# 		balance = self.request.user.useraccount.balance
-# 		if balance < ticket.price:
-# 			return redirect(reverse_lazy("error_410"))
+	def form_valid(self, form):
+		ticket = self.get_object()
+		balance = self.request.user.useraccount.balance
+		if balance < ticket.price:
+			return redirect(reverse_lazy("error_410"))
 
-# 		self.request.user.useraccount.balance = balance - ticket.price
-# 		self.request.user.useraccount.save()
-# 		ticket.is_purchased = True
-# 		ticket.save()
-# 		return redirect(reverse_lazy("plane_ticket_detail", kwargs={'pk':ticket.id}))
+		self.request.user.useraccount.balance = balance - ticket.price
+		self.request.user.useraccount.save()
+		ticket.is_purchased = True
+		ticket.save()
+		return redirect(reverse_lazy("concert_ticket_detail", kwargs={'pk':ticket.id}))
 
 class ListConcertEventView(ListView):
 	model = ConcertEvent
 	paginate_by = 25
-	template_name = "plane/plane_event_list.html"
-	context_object_name = 'plane_event_list'
+	template_name = "concert/concert_event_list.html"
+	context_object_name = 'event_list'
 	ordering = ['name']
 
-# @method_decorator(login_required, name='dispatch')
-# class ListPlaneTicketView(ListView):
-# 	model = PlaneTicket
-# 	paginate_by = 25
-# 	template_name = "plane/plane_ticket_list.html"
-# 	context_object_name = 'plane_ticket_list'
+@method_decorator(login_required, name='dispatch')
+class ListConcertTicketView(ListView):
+	model = ConcertTicket
+	paginate_by = 25
+	template_name = "concert/concert_ticket_list.html"
+	context_object_name = 'ticket_list'
 
-# 	def get_queryset(self):
-# 		return PlaneTicket.objects.filter(owner=self.request.user)
+	def get_queryset(self):
+		return ConcertTicket.objects.filter(owner=self.request.user)

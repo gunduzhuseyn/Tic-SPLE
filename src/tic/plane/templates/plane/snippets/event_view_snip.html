@@ -1,0 +1,13 @@
+{% block content %}
+	<h2>Event Name: {{ event.name }}</h2>
+	<p>Event Description: {{ event.description }}</p>
+	<p>Start Date: {{ event.start_time }}</p>
+	<p>End Date: {{ event.end_time }}</p>
+	{% if app_name == 'concert' or app_name == 'hospital' %}
+		<p>Location: {{ event.location }}</p>
+	{% else %}
+		<p>Departure City:{{ event.location }}</p>
+		<p>Destination City:{{ event.location_to }}</p>
+		<p>Flight Number:{{ event.flight_number }}</p>
+	{% endif %}	
+{% endblock %}

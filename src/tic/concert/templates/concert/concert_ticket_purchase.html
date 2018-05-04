@@ -1,0 +1,10 @@
+{% extends "core/header.html" %}
+
+{% block content %}
+	{% include "plane/snippets/plane_ticket_view_snippet.html" with show_url=False app_name='concert'%}
+	{% if not ticket.is_purchased %}
+		{% include "core/snippets/formsnippet.html" with form_title="Make Payment" submit_button_name="Purchase" %}
+	{% else %}
+		<p>You have already made the purchase!</p>
+	{% endif %}
+{% endblock %}

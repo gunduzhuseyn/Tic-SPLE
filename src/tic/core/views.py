@@ -19,6 +19,16 @@ from .forms import (UserRegistrationForm, LoginForm, ContentCreatorRegistrationF
 from .models import (UserProfile, UserAccount)
 
 #group_required decorator
+
+def redi_url(path, url):
+	if 'plane' in path:
+		return '/plane/' + url + '/'
+	elif 'concert' in path:
+		return '/concert/' + url + '/'
+	if 'hospital' in path:
+		return '/hospital/' + url + '/'
+	return '/' + url + '/'
+
 def group_required(*group_names):
 	def in_groups(u):
 		if u.is_authenticated():
@@ -31,7 +41,6 @@ class HomeView(TemplateView):
 	template_name = "core/home.html"
 
 def create_accounts(user):
-	#create user profile
 	profile = UserProfile.objects.create(user=user)
 	profile.save()
 
@@ -41,9 +50,10 @@ def create_accounts(user):
 class CustomerRegistrationView(FormView):
 	template_name = "core/registration/register.html"
 	form_class = UserRegistrationForm
-	success_url = '/home/'
+	success_url = 'home'
 
 	def form_valid(self, form):
+		self.success_url = redi_url(self.request.path, self.success_url)
 		form.save()
 		username = form.cleaned_data.get('username')
 		raw_password = form.cleaned_data.get('password1')
@@ -60,9 +70,10 @@ class CustomerRegistrationView(FormView):
 class ContentCreatorRegistrationView(FormView):
 	template_name = "core/registration/register.html"
 	form_class = ContentCreatorRegistrationForm
-	success_url = "/home/"
+	success_url = "home"
 
 	def form_valid(self, form):
+		self.success_url = redi_url(self.request.path, self.success_url)
 		username = form.cleaned_data.get('username')
 		email = form.cleaned_data.get('email')
 		password = User.objects.make_random_password()
@@ -84,11 +95,42 @@ class ContentCreatorRegistrationView(FormView):
 class UserLoginView(LoginView):
 	template_name = "core/registration/login.html"
 
+	def get_redirect_url(self):
+		if 'concert' in self.request.path:
+			return '/concert/home/'
+		elif 'plane' in self.request.path:
+			return '/plane/home/'
+		elif 'hospital' in self.request.path:
+			return '/hospital/home/'
+		else:
+			return '/home/'
+
+
 class UserLogoutView(LogoutView):
 	template_name = "core/registration/logout.html"
 
+	def get_redirect_url(self):
+		if 'concert' in self.request.path:
+			return '/concert/home/'
+		elif 'plane' in self.request.path:
+			return '/plane/home/'
+		elif 'hospital' in self.request.path:
+			return '/hospital/home/'
+		else:
+			return '/home/'
+
 class UserPasswordChangeView(PasswordChangeView):
 	template_name = "core/registration/password_change_form.html"
+
+	def get_redirect_url(self):
+		if 'concert' in self.request.path:
+			return '/concert/password_change/done/'
+		elif 'plane' in self.request.path:
+			return '/plane/password_change/done/'
+		elif 'hospital' in self.request.path:
+			return '/hospital/password_change/done/'
+		else:
+			return '/password_change/done/'
 
 class UserPasswordChangeDoneView(PasswordChangeDoneView):
 	template_name = "core/registration/password_change_done.html"
@@ -127,9 +169,10 @@ class UserProfileView(DetailView):
 class UserProfileEditView(FormView):
 	template_name = "core/user_profile_edit.html"
 	form_class = UserProfileEditForm
-	success_url = '/profile/'
+	success_url = 'profile'
 
 	def form_valid(self, form):
+		self.success_url = redi_url(self.request.path, self.success_url)
 		first_name = form.cleaned_data.get('first_name')
 		last_name = form.cleaned_data.get('last_name')
 		email = form.cleaned_data.get('email')
@@ -164,9 +207,10 @@ class UserAccountView(DetailView):
 class UserAccountUpdateView(FormView):
 	template_name = "core/user_account_update.html"
 	form_class = PaymentForm
-	success_url = '/account/'
+	success_url = 'account'
 
 	def form_valid(self, form):
+		self.success_url = redi_url(self.request.path, self.success_url)
 		account = UserAccount.objects.get(user=self.request.user)
 		account.balance += form.cleaned_data.get('amount')
 		account.save()

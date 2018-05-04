@@ -1,0 +1,10 @@
+{% extends "core/header.html" %}
+
+{% block content %}
+<div style="align-items: center; display:  flex; flex-direction:  column; padding-top: 30px;">
+	<h2>My Tickets: </h2>
+	{% for ticket in ticket_list %}
+		<p><a class="btn btn-info" href="/hospital/ticket/{{ticket.id}}">{{ ticket.event.name }} <br> {{ticket.start_time}} <br> {{ticket.end_time}}</a></p>
+	{% endfor %}
+</div>
+{% endblock %}

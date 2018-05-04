@@ -1,0 +1,10 @@
+{% extends "core/header.html" %}
+
+{% block content %}
+<div style="display: flex; flex-direction: column; align-items: center; padding-top: 20px;">
+	<h2>Events: </h2>
+	{% for event in event_list %}
+		<p><a class="btn btn-info" href="/hospital/event/{{event.id}}">{{ event.name }}</a></p>
+	{% endfor %}
+</div>
+{% endblock %}

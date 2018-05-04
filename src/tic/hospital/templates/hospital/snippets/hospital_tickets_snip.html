@@ -1,0 +1,5 @@
+{% block content %}
+	{% for ticket in event.hospitalticket_set.all %}
+		<button type="button" {% if ticket.is_reserved or ticket.is_purchased %} class="btn btn-danger" {% else %} class="btn btn-success" {% endif %}>{{ticket.start_time}} <br> {{ticket.end_time}}</button> <br><br>
+	{% endfor %}
+{% endblock %}

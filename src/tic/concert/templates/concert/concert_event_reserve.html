@@ -1,0 +1,6 @@
+{% extends "core/header.html" %}
+
+{% block content %}
+	{% include "plane/snippets/plane_event_view_snippet.html" with app_name='concert'%}
+	{% include "core/snippets/formsnippet.html" with form_title="Choose a Seat" submit_button_name="Reserve" %}
+{% endblock %}

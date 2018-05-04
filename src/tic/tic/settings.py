@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'core',
     'plane',
     'concert',
+    'hospital',
 ]
 
 MIDDLEWARE = [
@@ -123,12 +124,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'tic'
-#
-EMAIL_USE_TLS = True
 
 LOGIN_REDIRECT_URL = '/home/'
 LOGOUT_REDIRECT_URL = '/home/'

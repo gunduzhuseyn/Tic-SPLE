@@ -19,12 +19,16 @@
 
 </head>
 <body>
-	{% if 'plane' in request.path %}
-		{% include "core/navbar.html" with app_name='plane'%}
-	{% elif  'concert' in request.path %}
-		{% include "core/navbar.html" with app_name='concert'%}
-	{% endif %}
-	{% block content %}
-	{% endblock %}
+	<div class = "containerUn">
+		{% if 'plane' in request.path %}
+			{% include "core/navbar.html" with app_name='plane'%}
+		{% elif  'concert' in request.path %}
+			{% include "core/navbar.html" with app_name='concert'%}
+		{% elif  'hospital' in request.path %}
+			{% include "core/navbar.html" with app_name='hospital'%}
+		{% endif %}
+		{% block content %}
+		{% endblock %}
+	</div>
 </body>
 </html>

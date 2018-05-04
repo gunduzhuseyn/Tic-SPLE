@@ -1,24 +1,31 @@
 {% block content %}
+
+	<div class="card border-info mb-3" id="ticket_view" style="display:flex; align-items:center; flex-direction:column; padding-top: 20px; padding-bottom: 10px;">
 	{% with event=ticket.event %}
 	<!-- Event Info -->
-	<h2>Event Name: {{ event.name }}</h2>
-	<p>Event Desc:{{ event.description }}</p>
-	<p>Start time:{{ event.start_time }}</p>
-	<p>End time:{{ event.end_time }}</p>
-	<p>Departue:{{ event.location }}</p>
-	<p>Destination:{{ event.location_to }}</p>
-	<p>Flight No:{{ event.flight_number }}</p>
+	{% include "plane/snippets/event_view_snip.html" %}
 	{% endwith %}
 	<!-- Ticket info -->
 	{% if ticket.is_reserved and not ticket.is_purchased %}
-		<p>Reservation Due:{{ ticket.reserve_deadline }}</p>
+		<p>Reservation Due: {{ ticket.reserve_deadline }}</p>
 	{% endif %}	
 	<p>Owner:{{ ticket.owner.username }}</p>
-	<p>Seat No:{{ ticket.seat.seat_no }}</p>
+	{% if app_name == 'hospital' %}
+		<p>Appointment Start Time: {{ ticket.start_time }}</p>
+		<p>Appointment End Time: {{ ticket.end_time }}</p>
+	{% else %}
+		<p>Seat No: {{ ticket.seat.seat_no }}</p>
+	{% endif %}
 	<p>Price: {{ticket.price}}</p>
 	<p>Status: {% if ticket.is_purchased %} Purchased {% elif ticket.is_reserved %} Reserved {% else %} Available {% endif %}</p>
-	{% if ticket.is_reserved and not ticket.is_purchased and show_url%}
-		<a href="purchase/">Purchase this ticket</a>
-	{% endif %}
+	<div class="card border-info mb-3">
+		{% if ticket.is_purchased %}
+			{% include "plane/snippets/ticket_retrieval_buttons.html" %}
+		{% endif %}
+	</div>
 	
+	{% if ticket.is_reserved and not ticket.is_purchased and show_url%}
+		<a class="btn btn-info" href="purchase/">Purchase this ticket</a>
+	{% endif %}
+</div>
 {% endblock %}

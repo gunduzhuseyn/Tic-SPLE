@@ -1,5 +1,12 @@
 {% extends "core/header.html" %}
 
 {% block content %}
-<p>Wazzupp? I am Mamed, how you doin?</p>
+<div id="home" style="  display: flex;
+                        flex-direction: column;
+                        align-items: center;">
+    {% load static %}
+    <img src='{% static "imgs/tic.jpg" %}' width=250>
+    <h1 style="align-self: auto;">Welcome to Tic!<h1>
+
+</div>
 {% endblock %}

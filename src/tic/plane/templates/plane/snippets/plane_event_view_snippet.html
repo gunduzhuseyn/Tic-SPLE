@@ -1,13 +1,17 @@
 {% block content %}
-	<h2>{{ event.name }}</h2>
-	<p>{{ event.description }}</p>
-	<p>{{ event.start_time }}</p>
-	<p>{{ event.end_time }}</p>
-	<p>{{ event.location }}</p>
-	<p>{{ event.location_to }}</p>
-	<p>{{ event.flight_number }}</p>
-
-	{% for seating_plan in event.seatingplan_set.all %}
-		{% include "plane/snippets/seating_plan.html" %}
-	{% endfor %}
+<div style="align-items: center; margin-left: 650px;">
+	{% include "plane/snippets/event_view_snip.html" %}
+	{% if app_name == 'hospital' %}
+		{% include "hospital/snippets/hospital_tickets_snip.html" %}
+	{% else %}
+		{% for seating_plan in event.seatingplan_set.all %}
+			<div style="align-items: center;">
+				{% include "plane/snippets/seating_plan.html" %}
+			</div>
+		{% endfor %}
+	{% endif %}
+	{% if app_name == 'concert' %}
+		{% include "concert/snippets/concert_social_buttons.html" %}
+	{% endif %}
+</div>
 {% endblock %}

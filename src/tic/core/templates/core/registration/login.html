@@ -4,19 +4,21 @@
 	{% if not request.user.is_authenticated %}
 		<style type="text/css">
 			#backg{
-				background: url("/static/imgs/plane.jpg") 100% 0 no-repeat fixed;
+				background: url("/static/imgs/{% if 'plane' in request.path %}plane{%elif 'concert' in request.path%}concert{%elif 'hospital' in request.path%}hospital{%endif%}.jpg") 50% 0 no-repeat fixed;
 				color: white;
 				height: 900px;
-				padding: 100px 0 0 50px;   
+				padding: 200px 0 0 50px; 
+				text-align: center;
 			}
 		</style>
 
-		<div id="backg">
-			<div class="jumbotron vertical-center">
-				{% include "core/snippets/formsnippet.html" with imgname="plane.jpg" form_title="Login" submit_button_name="Login" %}
-			</div>			
+		<div id="backg">			
+			{% include "core/snippets/formsnippet.html" with imgname="plane.jpg" form_title="Login" submit_button_name="Login" %}
 		</div>
 	{% else %}
-		<p>You are already logged in mate!</p>
+		<div style="display: flex;
+					justify-items: center;">
+		<h5>You are already logged in!</h5>
+		</div>
 	{% endif %}	
 {% endblock %}

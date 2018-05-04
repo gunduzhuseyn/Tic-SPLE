@@ -1,8 +1,10 @@
 {% extends "core/header.html" %}
 
 {% block content %}
+<div style="display: flex; flex-direction: column; align-items: center; padding-top: 20px;">
 	<h2>Events: </h2>
 	{% for event in plane_event_list %}
-		<p><a href="/plane/event/{{event.id}}">{{ event.name }}</a></p>
+		<p><a class="btn btn-info" href="/plane/event/{{event.id}}">{{ event.name }}</a></p>
 	{% endfor %}
+</div>
 {% endblock %}

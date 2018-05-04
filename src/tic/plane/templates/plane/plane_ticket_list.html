@@ -1,8 +1,10 @@
 {% extends "core/header.html" %}
 
 {% block content %}
+<div style="align-items: center; display:  flex; flex-direction:  column; padding-top: 30px;">
 	<h2>My Tickets: </h2>
 	{% for ticket in plane_ticket_list %}
-		<p><a href="/plane/ticket/{{ticket.id}}">{{ ticket.event.name }} Seat No:{{ ticket.seat.seat_no }}</a></p>
+		<p><a class="btn btn-info" href="/plane/ticket/{{ticket.id}}">{{ ticket.event.name }} Seat No:{{ ticket.seat.seat_no }}</a></p>
 	{% endfor %}
+</div>
 {% endblock %}

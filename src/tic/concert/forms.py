@@ -19,6 +19,7 @@ class ChooseSeatForm(CoreChooseSeatForm):
 	pass
 
 class ButtonForm(CoreButtonForm):
+	coupon = forms.CharField(max_length=30, label="Apply Coupon (Optional)", required=False)
 	pass
 
 class SeatPriceForm(forms.Form):
